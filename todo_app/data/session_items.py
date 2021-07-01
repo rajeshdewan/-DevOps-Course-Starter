@@ -1,82 +1,173 @@
-from flask import session
 
-_DEFAULT_ITEMS = [
-    { 'id': 1, 'status': 'Not Started', 'title': 'List saved todo items' },
-    { 'id': 2, 'status': 'Not Started', 'title': 'Allow new items to be added' }
-]
+import requests
+import os
+import json
+from dotenv import load_dotenv
 
+#Class to define propoerties of item created in Trello 
+class MyItem:
+   def __init__(self,itemid,title,status):
+        self.id = itemid
+        self.title = title
+        self.status = status
+   
+   def displayitem(self):
+       print (self.id, self.title,self.status)
+  
+#loading environment variables for KEY,TOKEN to be used if functions are invoked without flask
+load_dotenv()
 
-def get_items():
-    """
-    Fetches all saved items from the session.
-
-    Returns:
-        list: The list of saved items.
-    """
-    return session.get('items', _DEFAULT_ITEMS.copy())
-
-
-def get_item(id):
-    """
-    Fetches the saved item with the specified ID.
-
-    Args:
-        id: The ID of the item.
-
-    Returns:
-        item: The saved item, or None if no items match the specified ID.
-    """
-    items = get_items()
-    return next((item for item in items if item['id'] == int(id)), None)
+#Get id of board created in Trello
+def getBoardid():
+   url_for_board = 'https://api.trello.com/1/members/me/boards'
 
 
-def add_item(title):
-    """
-    Adds a new item with the specified title to the session.
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')
+   }
 
-    Args:
-        title: The title of the item.
-
-    Returns:
-        item: The saved item.
-    """
-    items = get_items()
-
-    # Determine the ID for the item based on that of the previously added item
-    id = items[-1]['id'] + 1 if items else 0
-
-    item = { 'id': id, 'title': title, 'status': 'Not Started' }
-
-    # Add the item to the list
-    items.append(item)
-    session['items'] = items
-
-    return item
+   response = requests.request(
+      "GET",
+      url_for_board,
+      params=query
+   )
+   
+   getBoardresponse = response.text
+   getBoardresponse = json.loads(getBoardresponse)
+   return getBoardresponse[0]["id"]
 
 
-def save_item(item):
-    """
-        Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
+#########Get list id of To Do#########
 
-    Args:
-        item: The item to save.
-    """
-    existing_items = get_items()
-    updated_items = [item if item['id'] == existing_item['id'] else existing_item for existing_item in existing_items]
+def gettodolistid(board_id):
+   
+   url_for_lists = 'https://api.trello.com/1/boards/'+board_id+'/lists'
+   
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')
+   }
 
-    session['items'] = updated_items
 
-    return item
+   response = requests.request(
+      "GET",
+      url_for_lists,
+      params=query
+   )
+   
+   getListsresponse = response.text
+   getListsresponse = json.loads(getListsresponse)
+   
+   getListsresponse = [x['id'] for x in getListsresponse if x['name'] == 'To Do']
+   getListsresponse = getListsresponse[0]
+   return getListsresponse
 
-# Delete function to delete an item from the list
+   
+##############Get list id of done############
 
-def delete_item(itemid):
-    
-    items = get_items()
-    for i in range(len(items)):
-        if items[i]['id'] == itemid:
-            del items[i]
-            break
-    items = get_items()
-    session['items'] = items
-    return items        
+def getdonelistid(board_id):
+   
+   url_for_lists = 'https://api.trello.com/1/boards/'+board_id+'/lists'
+   
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')
+   }
+
+   response = requests.request(
+      "GET",
+      url_for_lists,
+      params=query
+   )
+   
+   getListsresponse = response.text
+   getListsresponse = json.loads(getListsresponse)
+   
+   getListsresponse = [x['id'] for x in getListsresponse if x['name'] == 'Done']
+   getListsresponse = getListsresponse[0]
+   return getListsresponse
+
+
+################Get Items on To do and Done list ####################### 
+def getallitems ():
+   board_id = getBoardid()
+   todolistid = gettodolistid(board_id)
+   donelistid = getdonelistid(board_id)
+
+   return getToDoItems(todolistid,"Not Started") + getToDoItems(donelistid,"Done")
+
+def getToDoItems(list_id, list_name): 
+   
+   url_for_todoitems = 'https://api.trello.com/1/lists/'+list_id+'/cards'
+   
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')
+   }
+
+   response = requests.request(
+      "GET",
+      url_for_todoitems,
+      params=query
+   )
+   
+   gettodoitems = response.text
+   gettodoitems = json.loads(gettodoitems)
+
+   result = []
+
+   for item in gettodoitems:
+      item1 = MyItem(item["id"],item["name"],list_name)
+      disp = item1.displayitem()
+      result.append(item1)
+   return result
+   
+######Create a card on To do items list
+
+def putToDoItems(newcardname):
+   board_id = getBoardid()
+   todolistid = gettodolistid(board_id)
+
+
+   url_for_todoitems = 'https://api.trello.com/1/cards'
+   
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN'),
+      'idList': todolistid,
+      'name' : newcardname
+
+   }
+
+   response = requests.request(
+      "POST",
+      url_for_todoitems,
+      params=query
+   )
+   
+   puttodoitems = response.text
+   puttodoitems = json.loads(puttodoitems)
+   
+#####Mark an item complete i.e. move it from To Do to Done list######
+
+def markcomplete(itemid):
+   board_id = getBoardid()
+   
+   donelistid = getdonelistid(board_id)
+   urlformarkcomplete = 'https://api.trello.com/1/cards/'+itemid
+
+   headers = {
+   "Accept": "application/json"
+   }
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN'),
+      'idList': donelistid      
+   }
+   response = requests.request(
+      "PUT",
+      urlformarkcomplete,
+      headers=headers,
+      params=query
+   )

@@ -19,10 +19,6 @@
         <input type="submit" value="Complete" class="btn btn-success">         
       </form>
       {%endif%}
-      <form method="POST" action = "/delete">
-        <input type="hidden" name="itemdelete" value = "{{item.id}}"> 
-        <input type="submit" value="Delete" class = "btn btn-danger"> 
-      </form>
     </li>
 		{% endfor%}
 	  </ul>
@@ -31,10 +27,7 @@
 
 
  <form method="POST">
-               <div><label>Add New Item: <input type="text" name="itemname"></label> <input type="submit" value="Submit"></div>
-			   <!--<div><label>Mark an item complete: <input type="text" name="itemcomplete"></label> <input type="submit" value="Submit"></div> -->
-               
-			   
+ <div><label>Add New Item: <input type="text" name="itemname"></label> <input type="submit" value="Submit"></div>
  </form>
 
 
