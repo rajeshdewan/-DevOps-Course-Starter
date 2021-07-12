@@ -11,7 +11,8 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        {% for item in getlist%}
+        {# {% for item in getlist%}     to be removed     #}
+    {% for item in view_model.items %}
 		<li> {{item.id}} - {{item.title}} - {{item.status}} 
       {% if item.status == "Not Started"%}
       <form method="POST" action = "/complete">

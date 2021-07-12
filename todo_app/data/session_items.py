@@ -14,6 +14,22 @@ class MyItem:
    def displayitem(self):
        print (self.id, self.title,self.status)
   
+class ViewModel:
+   def __init__(self, items):
+      self._items = items
+   @property
+   def items(self):
+      return self._items
+   @property
+   def todoitems(self):
+      listoftodo = []
+      for i in self._items:
+         if i.status == "Not Started":
+            listoftodo.append(i)
+      return listoftodo
+
+
+
 #loading environment variables for KEY,TOKEN to be used if functions are invoked without flask
 load_dotenv()
 
@@ -97,6 +113,13 @@ def getallitems ():
 
    return getToDoItems(todolistid,"Not Started") + getToDoItems(donelistid,"Done")
 
+## Get items only on To Do list
+def getonlytodoitems():
+   board_id = getBoardid()
+   todolistid = gettodolistid(board_id)
+   return getToDoItems(todolistid,"Not Started")
+
+
 def getToDoItems(list_id, list_name): 
    
    url_for_todoitems = 'https://api.trello.com/1/lists/'+list_id+'/cards'
@@ -171,3 +194,60 @@ def markcomplete(itemid):
       headers=headers,
       params=query
    )
+
+
+#######Create a new board ######
+def createboard():
+   url = "https://api.trello.com/1/boards/"
+
+
+
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN'),
+      'name': 'Assignments'
+   }
+
+   print(os.getenv('KEY'))
+   print(os.getenv('TOKEN'))
+   response = requests.request(
+      "POST",
+      url,
+      params=query
+   )
+   print(response.text)
+
+
+#######Create a new board ######
+
+def deleteboard():
+   url = "https://api.trello.com/1/boards/{id}"
+
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')      
+   }
+   response = requests.request(
+   "DELETE",
+   url,
+   params=query
+)
+
+   print(response.text)
+
+
+
+####get all boards###
+def getallboards():
+   url = "https://api.trello.com/1/boards"
+
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')      
+   }
+   response = requests.request(
+   "GET",
+   url,
+   params=query
+   )
+   print(response.text)   
