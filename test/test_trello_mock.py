@@ -24,6 +24,7 @@ def test_index_page(mock_get_requests, client):
 def mock_get_lists(method, url, params):
     board_id = '100'
     todoid = '200'
+    list_id ='300'
     #if url == f'https://api.trello.com/1/boards/{TEST_BOARD_ID}/lists':
     if url == f'https://api.trello.com/1/members/me/boards':    
         response = Mock()
@@ -34,8 +35,13 @@ def mock_get_lists(method, url, params):
         return response
     elif url == 'https://api.trello.com/1/boards/'+board_id+'/lists': 
         response = Mock()
-        response.text == json.dumps([{"id": todoid}])
+        response.text = json.dumps([{"id":"200","name": "To Do"},{"id":"300","name": "Done"}])
+        #response.text = json.dumps([{"name": "To Do"}])
         return response
+    elif url == 'https://api.trello.com/1/lists/'+list_id+'/cards':
+        response= Mock()
+        response.text = json.dumps([{"id":"400","name": "Not Started"},{"id":"500","name": "Done"}])
+    
     return None
     
     #assert response[0].get("name") == "Holiday"
