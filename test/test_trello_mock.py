@@ -18,41 +18,41 @@ def client():
 @patch('requests.request')
 def test_index_page(mock_get_requests, client):
     mock_get_requests.side_effect = mock_get_lists
-    response = client.get('/') ##pretending to make http req
-#can be used to spy
+    response = client.get('/') 
+    assert response.status_code == 200
+
+@patch('requests.request')
+def test_index_page1(mock_get_requests, client):
+    mock_get_requests.side_effect = mock_get_lists
+    response = client.get('/') 
+    assert 'Not Started' in response.data.decode()
 
 def mock_get_lists(method, url, params):
     board_id = '100'
     todoid = '200'
-    list_id ='300'
+    list_id ='200'
+    list_id_done = '300'
     #if url == f'https://api.trello.com/1/boards/{TEST_BOARD_ID}/lists':
     if url == f'https://api.trello.com/1/members/me/boards':    
         response = Mock()
         response.text = '[{"id":"' +board_id +'"}]'
-        #= json.dumps([{"id": board_id}])
 
-        #response.json.return_value = "60be30080cacf2335dbaa61c Packing Not Started"
+
         return response
     elif url == 'https://api.trello.com/1/boards/'+board_id+'/lists': 
         response = Mock()
         response.text = json.dumps([{"id":"200","name": "To Do"},{"id":"300","name": "Done"}])
-        #response.text = json.dumps([{"name": "To Do"}])
+
         return response
     elif url == 'https://api.trello.com/1/lists/'+list_id+'/cards':
         response= Mock()
         response.text = json.dumps([{"id":"400","name": "Not Started"},{"id":"500","name": "Done"}])
+        return response
+    elif url == 'https://api.trello.com/1/lists/'+list_id_done+'/cards':
+        response= Mock()
+        response.text = json.dumps([{"id":"400","name": "Not Started"},{"id":"500","name": "Done"}])
+        return response
+
     
     return None
     
-    #assert response[0].get("name") == "Holiday"
-# @patch('requests.get')
-# def test_index_page(self,mock_get_requests, client):
-#     mock_get_requests.return_value.status_code = 200
-#     response = client.get('/')
-#     assert response.status_code == 200
-#     self.assertEqual(response.status_code, 200)
-
-# def test_index_page(client):
-#     response = client.get('/')
-  
-#  assert response.status_code == 200

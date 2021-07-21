@@ -3,6 +3,7 @@ import requests
 import os
 import json
 from dotenv import load_dotenv
+from threading import Thread
 
 #Class to define propoerties of item created in Trello 
 class MyItem:
@@ -23,10 +24,19 @@ class ViewModel:
    @property
    def todoitems(self):
       listoftodo = []
+      listofdone = []
       for i in self._items:
          if i.status == "Not Started":
             listoftodo.append(i)
       return listoftodo
+
+   @property
+   def doneitems(self):
+      listofdone = []
+      for i in self._items:
+         if i.status == "Done":
+            listofdone.append(i)
+      return listofdone
 
 
 
@@ -197,7 +207,7 @@ def markcomplete(itemid):
 
 
 #######Create a new board ######
-def createboard():
+def create_trello_board():
    url = "https://api.trello.com/1/boards/"
 
 
@@ -208,21 +218,31 @@ def createboard():
       'name': 'Assignments'
    }
 
-   print(os.getenv('KEY'))
-   print(os.getenv('TOKEN'))
+
    response = requests.request(
       "POST",
       url,
       params=query
    )
-   print(response.text)
+   getresponse = response.text
+   
+   getresponse1 = json.loads(getresponse)
+
+   idofboardcreated = getresponse1.get('id')
+   
+   return idofboardcreated
+   
 
 
-#######Create a new board ######
 
-def deleteboard():
-   url = "https://api.trello.com/1/boards/{id}"
+#######Delete the board ######
 
+def delete_trello_board():
+   load_dotenv()
+   idtobedeleted = os.getenv('TRELLO_BOARD_ID')
+   
+   url = f"https://api.trello.com/1/boards/{idtobedeleted}"
+   
    query = {
       'key': os.getenv('KEY'),
       'token': os.getenv('TOKEN')      
@@ -237,17 +257,3 @@ def deleteboard():
 
 
 
-####get all boards###
-def getallboards():
-   url = "https://api.trello.com/1/boards"
-
-   query = {
-      'key': os.getenv('KEY'),
-      'token': os.getenv('TOKEN')      
-   }
-   response = requests.request(
-   "GET",
-   url,
-   params=query
-   )
-   print(response.text)   
