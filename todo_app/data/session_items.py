@@ -44,26 +44,27 @@ class ViewModel:
 load_dotenv()
 
 #Get id of board created in Trello
-def getBoardid():
-   url_for_board = 'https://api.trello.com/1/members/me/boards'
+# def getBoardid():
+#    url_for_board = 'https://api.trello.com/1/members/me/boards'
 
 
-   query = {
-      'key': os.getenv('KEY'),
-      'token': os.getenv('TOKEN')
-   }
+#    query = {
+#       'key': os.getenv('KEY'),
+#       'token': os.getenv('TOKEN')
+#    }
 
-   response = requests.request(
-      "GET",
-      url_for_board,
-      params=query
-   )
+#    response = requests.request(
+#       "GET",
+#       url_for_board,
+#       params=query
+#    )
    
-   getBoardresponse = response.text
-   getBoardresponse = json.loads(getBoardresponse)
-   return getBoardresponse[0]["id"]
+#    getBoardresponse = response.text
+#    getBoardresponse = json.loads(getBoardresponse)
+#    return getBoardresponse[0]["id"]
 
-
+def getBoardid():
+    return os.environ['TRELLO_BOARD_ID']
 #########Get list id of To Do#########
 
 def gettodolistid(board_id):
@@ -224,13 +225,12 @@ def create_trello_board():
       url,
       params=query
    )
-   getresponse = response.text
    
-   getresponse1 = json.loads(getresponse)
-
+   getresponse1 = response.json()
    idofboardcreated = getresponse1.get('id')
+   nameofboardcreated = getresponse1.get('name')
    
-   return idofboardcreated
+   return idofboardcreated,nameofboardcreated
    
 
 
@@ -238,7 +238,7 @@ def create_trello_board():
 #######Delete the board ######
 
 def delete_trello_board():
-   load_dotenv()
+   #load_dotenv()
    idtobedeleted = os.getenv('TRELLO_BOARD_ID')
    
    url = f"https://api.trello.com/1/boards/{idtobedeleted}"

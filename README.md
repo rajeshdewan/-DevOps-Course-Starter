@@ -45,6 +45,7 @@ b) TOKEN : You will also need a token to access your board via API. You will be 
 pyproject.toml by running poetry add requests
 
 5) Add pytest to library in your list of poetry dependencies in pyproject.toml by running poetry add pytest
+This needs to be run only once, if the entry is present in pyproject.toml and poetry.lock, it needn't be run again
 
 6) Download chromedriver from following link and place the file choromedriver.exe in a test folder where all other test files will be placed. 
 https://chromedriver.chromium.org/downloads
@@ -57,9 +58,7 @@ a. Place the test file test_viewmodel.py in test folder of project app and execu
 poetry run pytest test_viewmodel.py
 
 2) Running Integration tests
-a. Place test file test_trello.py in test folder and run  poetry run pytest test_trello.py
-This test should fail
-b. Mock the test and place test file test_trello_mock.py in test folder and run  poetry run pytest test_trello_mock.py
+a. Mock the test and place test file test_trello_mock.py in test folder and run  poetry run pytest test_trello_mock.py
 Based on current assertions in the test, this should pass
 
 3) Testing end to end with Selenium
