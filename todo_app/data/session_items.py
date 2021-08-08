@@ -44,7 +44,27 @@ class ViewModel:
 load_dotenv()
 
 def getBoardid():
-    return os.environ['TRELLO_BOARD_ID']
+   url_for_board = 'https://api.trello.com/1/members/me/boards'
+
+
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')
+   }
+
+   response = requests.request(
+      "GET",
+      url_for_board,
+      params=query
+   )
+   
+   getBoardresponse = response.text
+   getBoardresponse = json.loads(getBoardresponse)
+   return getBoardresponse[0]["id"]
+
+
+# def getBoardid():
+#     return os.environ['TRELLO_BOARD_ID']
 #########Get list id of To Do#########
 
 def gettodolistid(board_id):
@@ -103,6 +123,15 @@ def getallitems ():
    donelistid = getdonelistid(board_id)
 
    return getToDoItems(todolistid,"Not Started") + getToDoItems(donelistid,"Done")
+
+def getallitems_selenium ():
+   board_id = getBoardid_selenium()
+   todolistid = gettodolistid(board_id)
+   donelistid = getdonelistid(board_id)
+   return getToDoItems(todolistid,"Not Started") + getToDoItems(donelistid,"Done")
+
+def getBoardid_selenium():
+    return os.environ['TRELLO_BOARD_ID']
 
 ## Get items only on To Do list
 def getonlytodoitems():
