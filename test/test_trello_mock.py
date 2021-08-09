@@ -28,7 +28,7 @@ def test_index_page1(mock_get_requests, client):
     assert 'Not Started' in response.data.decode()
 
 def mock_get_lists(method, url, params):
-    board_id = '100'
+    board_id =  '60be2f051818be2e6b13fc78'
     todoid = '200'
     list_id ='200'
     list_id_done = '300'
