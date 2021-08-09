@@ -13,9 +13,9 @@ def client():
     with test_app.test_client() as client:
         yield client
 
-def test_index_page(client):
- response = client.get('/')
+# def test_index_page(client):
+#  response = client.get('/')
   
- assert response.status_code == 200
+#  assert response.status_code == 200
  
  
