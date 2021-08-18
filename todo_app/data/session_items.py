@@ -3,6 +3,7 @@ import requests
 import os
 import json
 from dotenv import load_dotenv
+from threading import Thread
 
 #Class to define propoerties of item created in Trello 
 class MyItem:
@@ -14,30 +15,37 @@ class MyItem:
    def displayitem(self):
        print (self.id, self.title,self.status)
   
+class ViewModel:
+   def __init__(self, items):
+      self._items = items
+   @property
+   def items(self):
+      return self._items
+   @property
+   def todoitems(self):
+      listoftodo = []
+      listofdone = []
+      for i in self._items:
+         if i.status == "Not Started":
+            listoftodo.append(i)
+      return listoftodo
+
+   @property
+   def doneitems(self):
+      listofdone = []
+      for i in self._items:
+         if i.status == "Done":
+            listofdone.append(i)
+      return listofdone
+
+
+
 #loading environment variables for KEY,TOKEN to be used if functions are invoked without flask
 load_dotenv()
 
-#Get id of board created in Trello
+
 def getBoardid():
-   url_for_board = 'https://api.trello.com/1/members/me/boards'
-
-
-   query = {
-      'key': os.getenv('KEY'),
-      'token': os.getenv('TOKEN')
-   }
-
-   response = requests.request(
-      "GET",
-      url_for_board,
-      params=query
-   )
-   
-   getBoardresponse = response.text
-   getBoardresponse = json.loads(getBoardresponse)
-   return getBoardresponse[0]["id"]
-
-
+    return os.environ['TRELLO_BOARD_ID']
 #########Get list id of To Do#########
 
 def gettodolistid(board_id):
@@ -91,11 +99,19 @@ def getdonelistid(board_id):
 
 ################Get Items on To do and Done list ####################### 
 def getallitems ():
-   board_id = getBoardid()
+   board_id = getBoardid()   
    todolistid = gettodolistid(board_id)
    donelistid = getdonelistid(board_id)
 
    return getToDoItems(todolistid,"Not Started") + getToDoItems(donelistid,"Done")
+
+
+## Get items only on To Do list
+def getonlytodoitems():
+   board_id = getBoardid()
+   todolistid = gettodolistid(board_id)
+   return getToDoItems(todolistid,"Not Started")
+
 
 def getToDoItems(list_id, list_name): 
    
@@ -171,3 +187,55 @@ def markcomplete(itemid):
       headers=headers,
       params=query
    )
+
+
+#######Create a new board ######
+def create_trello_board():
+   url = "https://api.trello.com/1/boards/"
+
+
+
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN'),
+      'name': 'Assignments'
+   }
+
+
+   response = requests.request(
+      "POST",
+      url,
+      params=query
+   )
+   
+   getresponse1 = response.json()
+   idofboardcreated = getresponse1.get('id')
+   nameofboardcreated = getresponse1.get('name')
+   
+   return idofboardcreated,nameofboardcreated
+   
+
+
+
+#######Delete the board ######
+
+def delete_trello_board():
+   #load_dotenv()
+   idtobedeleted = os.getenv('TRELLO_BOARD_ID')
+   
+   url = f"https://api.trello.com/1/boards/{idtobedeleted}"
+   
+   query = {
+      'key': os.getenv('KEY'),
+      'token': os.getenv('TOKEN')      
+   }
+   response = requests.request(
+   "DELETE",
+   url,
+   params=query
+)
+
+   print(response.text)
+
+
+

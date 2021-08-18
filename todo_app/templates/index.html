@@ -5,13 +5,16 @@
   <div class="jumbotron">
     <h1 class="display-4">To-Do App</h1>
     <p class="lead">Just another to-do app.</p>
+    
   </div>
 
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        {% for item in getlist%}
+
+    
+    {% for item in view_model.items %}
 		<li> {{item.id}} - {{item.title}} - {{item.status}} 
       {% if item.status == "Not Started"%}
       <form method="POST" action = "/complete">
@@ -27,7 +30,7 @@
 
 
  <form method="POST">
- <div><label>Add New Item: <input type="text" name="itemname"></label> <input type="submit" value="Submit"></div>
+ <div><label>Add New Item: <input type="text" name="itemname"></label> <input type="submit" value="Submit" id="addbutton"></div>
  </form>
 
 

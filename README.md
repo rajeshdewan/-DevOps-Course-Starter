@@ -32,18 +32,40 @@ $ cp .env.template .env  # (first time only)
 
 The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie.
 
-Set up instructions for Tello application :
+## Set up instructions for Trello application :
 1)For the application, create your account in Trello and then create a board.
 We will use the app to access the board using REST APIs
 a) KEY :To begin the authentication process, you need an API key. Every Trello user is given an API key. You can retrieve your API key by logging into Trello and visiting https://trello.com/app-key/.
 b) TOKEN : You will also need a token to access your board via API. You will be directed to a page to generate user specific token once API key has been generated.
 
-2) Create an account in Postman to explore the API
-
-3) Add KEY and TOKEN to .env file instead of hardcoding in the the program
+## Other set up instructions for running the tests:
+3) Add fake KEY and TOKEN to .env.test file instead of hardcoding in the the program. This file should be added to source control
 
 4) Add the requests library to your list of poetry dependencies in
 pyproject.toml by running poetry add requests
+
+5) Add pytest to library in your list of poetry dependencies in pyproject.toml by running poetry add pytest
+This needs to be run only once, if the entry is present in pyproject.toml and poetry.lock, it needn't be run again
+
+6) Download chromedriver from following link and place the file choromedriver.exe in a test folder where all other test files will be placed. 
+https://chromedriver.chromium.org/downloads
+
+7) Add chromedriver.exe to .gitignore as we don't want to push these files to Github
+
+## Executing tests
+1) Running unit test:
+a. Place the test file test_viewmodel.py in test folder of project app and execute following command:
+poetry run pytest test_viewmodel.py
+
+2) Running Integration tests
+a. Mock the test and place test file test_trello_mock.py in test folder and run  poetry run pytest test_trello_mock.py
+Based on current assertions in the test, this should pass
+
+3) Testing end to end with Selenium
+a. Place test file test_selenium.py in test folder and run poetry run test_selenium.py
+Based on current assertions in the test, this should pass
+
+
 
 ## Running the App
 
