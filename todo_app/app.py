@@ -5,7 +5,7 @@ from todo_app.data.session_items import  markcomplete,putToDoItems,getallitems,V
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config())
-
+    print(app.config["ENV"])
     # Call to display the page
     @app.route('/', methods=['GET'])
     def index():
