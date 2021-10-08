@@ -86,3 +86,23 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
+
+Docker commands
+These are the commands to build the image and run docker
+For Dev instance
+docker build --target development --tag todo-app:dev .
+
+without bind mount
+docker run -p 5000:5000 --env-file .env todo-app
+
+with bind mount
+docker run --mount type=bind,src=C:/Users/Rajesh/Devops_project/DevOps-Course-Starter/todo_app,dst=/app/src/todo_app -p 5000:5000 --env-file .env  todo-app:dev
+
+For Production instance
+docker build --target production --tag todo-app:prod .
+
+without bind mount
+docker run -p 8000:8000 --env-file .env todo-app:prod
+
+with bind mount
+docker run --mount type=bind,src=C:/Users/Rajesh/Devops_project/DevOps-Course-Starter/todo_app,dst=/app/src/todo_app -p 8000:8000 --env-file .env  todo-app:prod
