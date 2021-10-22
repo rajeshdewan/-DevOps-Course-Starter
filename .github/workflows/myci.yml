@@ -1,0 +1,13 @@
+name: Build To Do app
+on: [push]
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    env:
+        TOKEN: ${{ secrets.TOKEN }}
+        KEY: ${{ secrets.KEY }}
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo "Hello World"

@@ -6,12 +6,19 @@ from todo_app.app import create_app
 import time
 
 import os
+# @pytest.fixture(scope='module')
+# def driver():
+#  # path to your webdriver download
+#     with webdriver.Chrome('./chromedriver') as driver:
+#         yield driver
 @pytest.fixture(scope='module')
 def driver():
- # path to your webdriver download
-    with webdriver.Chrome('./chromedriver') as driver:
-        yield driver
-
+   opts = webdriver.ChromeOptions()
+   opts.add_argument('--headless')
+   opts.add_argument('--no-sandbox')
+   opts.add_argument('--disable-dev-shm-usage')
+   with webdriver.Chrome(options=opts) as driver:
+      yield driver
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
