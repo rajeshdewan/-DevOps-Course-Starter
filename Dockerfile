@@ -24,6 +24,42 @@ FROM base as development
 
 ENTRYPOINT ["poetry","run","flask","run","--host","0.0.0.0"] 
 
+FROM base as test
+COPY test ./test
+RUN poetry install
+RUN apt-get update -qqy && apt-get install -qqy wget gnupg unzip
+# Install Chrome
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub |apt-key add - \
+ && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+ && apt-get update -qqy \
+ && apt-get -qqy install google-chrome-stable \
+ && rm /etc/apt/sources.list.d/google-chrome.list \
+ && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+
+# Install Chrome WebDriver
+RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-9]+){3}.*/\1/") \
+ && CHROME_DRIVER_VERSION=$(wget --no-verbose -O - "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}") \
+ && echo "Using chromedriver version: "$CHROME_DRIVER_VERSION \
+ && wget --no-verbose -O /tmp/chromedriver_linux64.zip https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip \
+ && unzip /tmp/chromedriver_linux64.zip -d /usr/bin \
+ && rm /tmp/chromedriver_linux64.zip \
+ && chmod 755 /usr/bin/chromedriver
+
+#COPY /usr/bin/chromedriver ./test
+
+ENTRYPOINT ["poetry", "run", "pytest"]
+
+#docker build --target test --tag my-test-image .
+
+#docker run my-test-image test/test_viewmodel.py
+#docker run my-test-image test/test_trello_mock.py
+
+#with parameters
+#docker run  -e TOKEN=fd05c8b40c8e6ee957943ab385a64dd617b5a7857546628024797e4619071a47  -e KEY=223a298a35a8501137490e59595d2ac3  my-test-image test/test_selenium.py 
+
+#with env file
+#docker run --env-file .env my-test-image test/test_selenium.py      
+
 
 # These are the commands to build the image and run docker
 #For Dev instance
