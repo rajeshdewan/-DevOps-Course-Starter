@@ -58,7 +58,7 @@ ENTRYPOINT ["poetry", "run", "pytest"]
 
 #with parameters
 #docker run  -e TOKEN=fd05c8b40c8e6ee957943ab385a64dd617b5a7857546628024797e4619071a47  -e KEY=223a298a35a8501137490e59595d2ac3  my-test-image test/test_selenium.py 
-
+#docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py
 #with env file
 #docker run --env-file .env my-test-image test/test_selenium.py      
 
