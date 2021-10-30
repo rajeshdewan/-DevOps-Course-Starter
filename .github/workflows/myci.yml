@@ -11,3 +11,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: echo "Hello World 1"
+    - run: docker run my-test-image test/test_viewmodel.py
+    - run: docker run my-test-image test/test_trello_mock.py 
