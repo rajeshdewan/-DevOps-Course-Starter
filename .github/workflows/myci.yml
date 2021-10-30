@@ -13,6 +13,6 @@ jobs:
     - run: echo "Building image...."
     - run: docker build --target test --tag my-test-image .    
     - run: echo "Running tests...."
-    #- run: docker run my-test-image test/test_viewmodel.py
-    #- run: docker run my-test-image test/test_trello_mock.py
-    - run: docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py 
+    - run: docker run my-test-image test/test_viewmodel.py    
+    - run: docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py
+    - run: docker run my-test-image test/test_trello_mock.py
