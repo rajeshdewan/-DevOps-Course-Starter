@@ -44,27 +44,27 @@ class ViewModel:
 load_dotenv()
 
 
-# def getBoardid():
-#     return os.environ['TRELLO_BOARD_ID']
-
 def getBoardid():
-   url_for_board = 'https://api.trello.com/1/members/me/boards'
+    return os.environ['TRELLO_BOARD_ID']
+
+# def getBoardid():
+#    url_for_board = 'https://api.trello.com/1/members/me/boards'
 
 
-   query = {
-      'key': os.getenv('KEY'),
-      'token': os.getenv('TOKEN')
-   }
+#    query = {
+#       'key': os.getenv('KEY'),
+#       'token': os.getenv('TOKEN')
+#    }
 
-   response = requests.request(
-      "GET",
-      url_for_board,
-      params=query
-   )
+#    response = requests.request(
+#       "GET",
+#       url_for_board,
+#       params=query
+#    )
    
-   getBoardresponse = response.text
-   getBoardresponse = json.loads(getBoardresponse)
-   return getBoardresponse[0]["id"]
+#    getBoardresponse = response.text
+#    getBoardresponse = json.loads(getBoardresponse)
+#    return getBoardresponse[0]["id"]
 
 #########Get list id of To Do#########
 

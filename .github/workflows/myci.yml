@@ -10,4 +10,4 @@ jobs:
         KEY: ${{ secrets.KEY }}
     steps:
     - uses: actions/checkout@v2
-    - run: echo "Hello World"
+    - run: echo "Hello World 1"
