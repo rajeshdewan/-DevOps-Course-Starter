@@ -13,4 +13,4 @@ jobs:
     - run: echo "Hello World 1"
     - run: docker build --target test --tag my-test-image .
     - run: docker run my-test-image test/test_viewmodel.py
-    - run: docker run docker run --env-file .env my-test-image test/test_selenium.py 
+    - run: docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py 
