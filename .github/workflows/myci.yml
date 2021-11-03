@@ -1,20 +1,20 @@
 name: Build To Do app
 on: [push,pull_request]
   paths-ignore:
-  - '**/README.md'
+  - README.md
 
-  jobs:
-    build:
-      name: Build and test
-      runs-on: ubuntu-latest
-      env:
-          TOKEN: ${{ secrets.TOKEN }}
-          KEY: ${{ secrets.KEY }}
-      steps:
-      - uses: actions/checkout@v2
-      - run: echo "Building image...."
-      - run: docker build --target test --tag my-test-image .    
-      - run: echo "Running tests...."
-      - run: docker run my-test-image test/test_viewmodel.py    
-      - run: docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    env:
+        TOKEN: ${{ secrets.TOKEN }}
+        KEY: ${{ secrets.KEY }}
+    steps:
+    - uses: actions/checkout@v2
+    - run: echo "Building image...."
+    - run: docker build --target test --tag my-test-image .    
+    - run: echo "Running tests...."
+    - run: docker run my-test-image test/test_viewmodel.py    
+    - run: docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py
     
