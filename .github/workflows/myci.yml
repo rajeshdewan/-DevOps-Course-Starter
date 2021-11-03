@@ -1,5 +1,5 @@
 name: Build To Do app
-on: [push,pull_request]
+on: [push]
   paths-ignore:
   - '**/README.md'
 
