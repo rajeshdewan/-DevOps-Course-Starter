@@ -107,6 +107,15 @@ docker run -p 8000:8000 --env-file .env todo-app:prod
 with bind mount
 docker run --mount type=bind,src=C:/Users/Rajesh/Devops_project/DevOps-Course-Starter/todo_app,dst=/app/src/todo_app -p 8000:8000 --env-file .env  todo-app:prod
 
+     
+#########
+
+Module 6 C4 Diagram
+The diagram to be openend using : https://app.diagrams.net/
+This app was used to create the diagrams
+
+There are 3 separate tabs for Context, container and component diagram
+
 #############
 Exercise-7 commands
 #docker build --target test --tag my-test-image .
@@ -117,11 +126,4 @@ Exercise-7 commands
 #with parameters
 #docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py
 #with env file
-#docker run --env-file .env my-test-image test/test_selenium.py      
-#########
-
-Module 6 C4 Diagram
-The diagram to be openend using : https://app.diagrams.net/
-This app was used to create the diagrams
-
-There are 3 separate tabs for Context, container and component diagram
+#docker run --env-file .env my-test-image test/test_selenium.py 
