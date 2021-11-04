@@ -126,4 +126,5 @@ Exercise-7 commands
 #with parameters
 #docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py
 #with env file
-#docker run --env-file .env my-test-image test/test_selenium.py 
+#docker run --env-file .env my-test-image test/test_selenium.py
+# Testing commands for paths-ignore
