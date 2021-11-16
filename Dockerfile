@@ -47,6 +47,7 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
  && cp /usr/bin/chromedriver .
 
 COPY test ./test
+COPY .env.test ./
 
 ENTRYPOINT ["poetry", "run", "pytest"]
 
