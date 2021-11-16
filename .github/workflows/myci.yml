@@ -3,9 +3,9 @@ on:
   push:
     paths-ignore:
     - '**/README.md'
-  pull_request:
-    paths-ignore:
-    - '**/README.md'
+  # pull_request:
+  #   paths-ignore:
+  #   - '**/README.md'
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
         KEY: ${{ secrets.KEY }}
     steps:
     - uses: actions/checkout@v2
-    - run: echo "Building image...."
+    - name: Build Image
     - run: docker build --target test --tag my-test-image .    
     - run: echo "Running tests...."
     - run: docker run my-test-image test/test_viewmodel.py    
