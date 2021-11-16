@@ -6,11 +6,7 @@ from todo_app.app import create_app
 import time
 
 import os
-# @pytest.fixture(scope='module')
-# def driver():
-#  # path to your webdriver download
-#     with webdriver.Chrome('./chromedriver') as driver:
-#         yield driver
+
 @pytest.fixture(scope='module')
 def driver():
    opts = webdriver.ChromeOptions()
