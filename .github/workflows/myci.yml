@@ -30,9 +30,9 @@ jobs:
     needs:  build
     steps:
      -
-     uses: docker/login-action@v1  
-     with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      uses: docker/login-action@v1  
+      with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       run: docker build --target production --tag todo-app:prod .
-      #run: docker push production
+        #run: docker push production
