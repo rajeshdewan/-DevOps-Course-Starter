@@ -1,0 +1,24 @@
+name: Build To Do app
+on:
+  push:
+    paths-ignore:
+    - '**/README.md'
+  pull_request:
+    paths-ignore:
+    - '**/README.md'
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    env:
+        TOKEN: ${{ secrets.TOKEN }}
+        KEY: ${{ secrets.KEY }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Image
+      run: docker build --target test --tag my-test-image .    
+    - name: Running tests
+      run: docker run my-test-image test/test_viewmodel.py  &&  docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py && docker run  -e TOKEN -e KEY my-test-image test/test_trello_mock.py
+
+    

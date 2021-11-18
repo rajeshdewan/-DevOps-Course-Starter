@@ -46,6 +46,26 @@ load_dotenv()
 
 def getBoardid():
     return os.environ['TRELLO_BOARD_ID']
+
+# def getBoardid():
+#    url_for_board = 'https://api.trello.com/1/members/me/boards'
+
+
+#    query = {
+#       'key': os.getenv('KEY'),
+#       'token': os.getenv('TOKEN')
+#    }
+
+#    response = requests.request(
+#       "GET",
+#       url_for_board,
+#       params=query
+#    )
+   
+#    getBoardresponse = response.text
+#    getBoardresponse = json.loads(getBoardresponse)
+#    return getBoardresponse[0]["id"]
+
 #########Get list id of To Do#########
 
 def gettodolistid(board_id):

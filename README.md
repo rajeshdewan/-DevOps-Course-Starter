@@ -90,25 +90,48 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 Docker commands
 These are the commands to build the image and run docker
 For Dev instance
+```
 docker build --target development --tag todo-app:dev .
 
 without bind mount
+
 docker run -p 5000:5000 --env-file .env todo-app
 
 with bind mount
+
 docker run --mount type=bind,src=C:/Users/Rajesh/Devops_project/DevOps-Course-Starter/todo_app,dst=/app/src/todo_app -p 5000:5000 --env-file .env  todo-app:dev
 
 For Production instance
+
 docker build --target production --tag todo-app:prod .
 
 without bind mount
+
 docker run -p 8000:8000 --env-file .env todo-app:prod
 
 with bind mount
+
 docker run --mount type=bind,src=C:/Users/Rajesh/Devops_project/DevOps-Course-Starter/todo_app,dst=/app/src/todo_app -p 8000:8000 --env-file .env  todo-app:prod
+```
+     
+#########
 
 Module 6 C4 Diagram
 The diagram to be openend using : https://app.diagrams.net/
 This app was used to create the diagrams
 
 There are 3 separate tabs for Context, container and component diagram
+
+#############
+Exercise-7 commands
+```
+docker build --target test --tag my-test-image .
+
+docker run my-test-image test/test_viewmodel.py
+docker run my-test-image test/test_trello_mock.py
+
+with parameters
+docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py
+with env file
+docker run --env-file .env my-test-image test/test_selenium.py
+```
