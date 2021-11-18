@@ -29,7 +29,7 @@ jobs:
     #run:  echo "Publishing"
     needs:  build
     steps:
-     -
+     
       #run:  echo "Publishing"
 
      - name: Login to Docker Hub
