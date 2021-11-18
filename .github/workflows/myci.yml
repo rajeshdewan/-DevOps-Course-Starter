@@ -27,7 +27,7 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     #run:  echo "Publishing"
-    needs:  Build and test
+    needs:  build
     steps:
      -
       #run:  echo "Publishing"
