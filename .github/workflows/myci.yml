@@ -26,8 +26,8 @@ jobs:
   push:
     name: Publish
     runs-on: ubuntu-latest
-    run:  echo "Publishing"
-    needs:  Build and test
+    #run:  echo "Publishing"
+    #needs:  Build and test
     steps:
      -
       name: Login to Docker Hub
