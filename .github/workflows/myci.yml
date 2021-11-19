@@ -29,12 +29,13 @@ jobs:
     #run:  echo "Publishing"
     needs:  build
     steps:
+    - uses: actions/checkout@v2
     - uses: docker/login-action@v1  
       with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - run: docker build --target production --tag todo-app:prod .
-        #run: docker push production
+    - run: docker build --target rajeshdewan/todoapp:production --tag todo-app:prod .
+    - run: docker push rajeshdewan/todoapp:production
 
 
 
