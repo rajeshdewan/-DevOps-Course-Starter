@@ -19,7 +19,7 @@ EXPOSE 8000
 
 ENV FLASK_ENV=production
 #ENTRYPOINT ["poetry","run","gunicorn","--bind","0.0.0.0:8000","todo_app.app:create_app()"]
-CMD poetry run gunicorn "todo_app.app:create_app()"--bind 0.0.0.0:$PORT
+CMD poetry run gunicorn "todo_app.app:create_app()" --bind 0.0.0.0:$PORT
 
 FROM base as development
 
