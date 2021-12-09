@@ -128,3 +128,25 @@ Exercise-7 commands
 #with env file
 #docker run --env-file .env my-test-image test/test_selenium.py
 # Testing commands for paths-ignore
+
+
+########
+Exercise-8
+# Log into the Heroku API if you haven't already
+$ heroku login
+
+# Log into Heroku's registry (this can also be achieved with a docker login command)
+$ heroku container:login
+
+# Tag the image you built earlier for Docker Hub with the correct name for Heroku
+<docker pull rajeshdewan/todoapp:production >
+$ docker tag rajeshdewan/todoapp:production registry.heroku.com/todoappfordevops/web
+
+# Push it to Heroku registry
+$ docker push registry.heroku.com/todoappfordevops/web
+
+# Release the app
+heroku container:release web -a todoappfordevops
+heroku open -a todoappfordevops
+OR use the following link:
+http://todoappfordevops.herokuapp.com/
