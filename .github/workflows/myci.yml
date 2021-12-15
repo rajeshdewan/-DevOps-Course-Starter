@@ -36,3 +36,21 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
     - run: docker build --target production --tag rajeshdewan/todoapp:production .
     - run: docker push rajeshdewan/todoapp:production
+
+  
+  
+  deploy:
+    name: DeploytoHeroku
+    runs-on: ubuntu-latest
+    
+    #needs:  build
+    steps:
+    - uses: actions/checkout@v2
+    - uses: uses: gonuit/heroku-docker-deploy@v1.3.3  
+      with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "todoappfordevops"
+          heroku_email: "rajeshd1306@gmail.com"
+
+    - run: docker tag rajeshdewan/todoapp:production registry.heroku.com/todoappfordevops/web
+    - run: docker push registry.heroku.com/todoappfordevops/web
