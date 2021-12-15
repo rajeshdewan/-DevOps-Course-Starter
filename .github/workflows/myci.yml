@@ -52,5 +52,7 @@ jobs:
           heroku_app_name: "todoappfordevops"
           heroku_email: "rajeshd1306@gmail.com"
 
+    - run: echo Run on the master branch and not on pull request
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     - run: docker tag rajeshdewan/todoapp:production registry.heroku.com/todoappfordevops/web
     - run: docker push registry.heroku.com/todoappfordevops/web
