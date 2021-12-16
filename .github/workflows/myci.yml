@@ -42,8 +42,8 @@ jobs:
   deploy:
     name: DeploytoHeroku
     runs-on: ubuntu-latest
-    #if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-    #needs:  build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    needs:  build
     steps:
     - uses: actions/checkout@v2
     - uses: akhileshns/heroku-deploy@v3.12.12  
