@@ -42,17 +42,17 @@ jobs:
   deploy:
     name: DeploytoHeroku
     runs-on: ubuntu-latest
-    
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     #needs:  build
     steps:
     - uses: actions/checkout@v2
-    - uses: uses: gonuit/heroku-docker-deploy@v1.3.3  
+    - uses: akhileshns/heroku-deploy@v3.12.12  
       with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "todoappfordevops"
           heroku_email: "rajeshd1306@gmail.com"
+          usedocker: true
 
     - run: echo Run on the master branch and not on pull request
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-    - run: docker tag rajeshdewan/todoapp:production registry.heroku.com/todoappfordevops/web
-    - run: docker push registry.heroku.com/todoappfordevops/web
+      
+    
