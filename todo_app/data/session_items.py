@@ -4,6 +4,7 @@ import os
 import json
 from dotenv import load_dotenv
 from threading import Thread
+import pymongo
 
 #Class to define propoerties of item created in Trello 
 class MyItem:
@@ -119,11 +120,19 @@ def getdonelistid(board_id):
 
 ################Get Items on To do and Done list ####################### 
 def getallitems ():
-   board_id = getBoardid()   
-   todolistid = gettodolistid(board_id)
-   donelistid = getdonelistid(board_id)
+   client = pymongo.MongoClient(os.getenv("MONGO_CONNECTION"))
+   db=client[os.getenv("MONGO_DB")]
+   mycollection=db.mycollection
+   items=list(mycollection.find())
+   result_list =[]
+   for item in items:
+      result_list.append(MyItem(str(item["_id"]),item["name"],item["status"]))
+   return result_list
+   # board_id = getBoardid()   
+   # todolistid = gettodolistid(board_id)
+   # donelistid = getdonelistid(board_id)
 
-   return getToDoItems(todolistid,"Not Started") + getToDoItems(donelistid,"Done")
+   # return getToDoItems(todolistid,"Not Started") + getToDoItems(donelistid,"Done")
 
 
 ## Get items only on To Do list
