@@ -22,7 +22,7 @@ jobs:
       run: docker run my-test-image test/test_viewmodel.py  &&  docker run  -e TOKEN -e KEY my-test-image test/test_selenium.py && docker run  -e TOKEN -e KEY my-test-image test/test_trello_mock.py
 
 
-      
+
   push:
     name: Publish
     runs-on: ubuntu-latest
