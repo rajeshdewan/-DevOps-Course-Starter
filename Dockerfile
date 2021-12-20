@@ -14,11 +14,6 @@ COPY todo_app ./todo_app
 
 EXPOSE 5000
 
-FROM base as production
-EXPOSE 8000
-
-ENV FLASK_ENV=production
-ENTRYPOINT ["poetry","run","gunicorn","--bind","0.0.0.0:8000","todo_app.app:create_app()"]
 
 FROM base as development
 
@@ -51,3 +46,9 @@ COPY .env.test ./
 
 ENTRYPOINT ["poetry", "run", "pytest"]
 
+FROM base as production
+EXPOSE 8000
+
+ENV FLASK_ENV=production
+
+CMD poetry run gunicorn "todo_app.app:create_app()" --bind 0.0.0.0:$PORT
